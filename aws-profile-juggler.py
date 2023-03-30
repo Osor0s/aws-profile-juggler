@@ -181,7 +181,7 @@ def write_mfa_profile(profile, file, overwrite):
     role_session_name = input(f"Define a custom 'role session name' (default: {profile}): ")
     if role_session_name == "":
         role_session_name = profile
-    role_arn = input(f"Assumeable role which requires MFA: ")
+    role_arn = input(f"Arn of assumeable role which requires MFA: ")
 
     #prepare profile string and write it to the file
     profile_string = f"[profile {profile}]\nmfa_serial = {mfa_serial}\nsource_profile = {source_profile}\nrole_session_name = {role_session_name}\nrole_arn = {role_arn}"
