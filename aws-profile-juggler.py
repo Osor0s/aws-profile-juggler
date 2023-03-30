@@ -149,11 +149,11 @@ def write_credentials(credentials, file, profile, overwrite):
 
 def configure_credentials(credentials, profile):
     print(f"Manually setting up profile as profile: {profile}")
-    credentials["AWS_ACCESS_KEY_ID"] =      input("AWS Access Key ID:     ")
+    credentials["AWS_ACCESS_KEY_ID"] =      input("AWS Access Key ID: ")
     credentials["AWS_SECRET_ACCESS_KEY"] =  input("AWS Secret Access Key: ")
     if credentials["AWS_ACCESS_KEY_ID"].startswith("ASIA"):
         print(f"Recognised temporary credentials")
-        credentials["AWS_SESSION_TOKEN"] =  input("AWS Session Token:     ")
+        credentials["AWS_SESSION_TOKEN"] =  input("AWS Session Token: ")
 
 if __name__ == "__main__":
     main()
