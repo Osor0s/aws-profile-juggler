@@ -33,7 +33,7 @@ def main():
     parser.add_argument("-f","--file",help = "AWS credentials file", type=str,default=AWS_CREDENTIALS_FILE)
     ## Options to configure credentials & profiles more easily
     parser.add_argument("-c","--configure",help = "Configure (temp) AWS credentials manually", action="store_true")
-    parser.add_argument("-m","--mfa-configure",help = "Configure an mfa profile to automatically assume a role and ask for new token when necassary", action="store_true")
+    parser.add_argument("-m","--mfa-configure",help = "Configure an mfa profile to automatically assume a role and ask for new token when necessary", action="store_true")
     parser.add_argument("--aws-config-file",help = "AWS config file", type=str,default=AWS_CONFIG_FILE)
 
     args = parser.parse_args()  
