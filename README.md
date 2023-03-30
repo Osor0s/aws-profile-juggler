@@ -1,10 +1,10 @@
 # aws-profile-juggler
 ## TL;DR
 Easily interact with AWS profiles. Helps with ...
-    - extratcing AWS (temp) credentials from input in multiple typical formats
-    - add credentials as profiles to the aws credential file  (`~/.aws/credentials`)
-    - configure a set of credentials manually INCLUDING temporary credentials
-    - configure a profile for an assumeable role which requires MFA
+- extratcing AWS (temp) credentials from input in multiple typical formats
+- add credentials as profiles to the aws credential file  (`~/.aws/credentials`)
+- configure a set of credentials manually INCLUDING temporary credentials
+- configure a profile for an assumeable role which requires MFA
 
 ## Usage
 ```
@@ -39,7 +39,7 @@ $ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-
         "Type": "",
         "AccessKeyId": "ASIAABCDEFGHIJKLMNOP",
         "SecretAccessKey": "1ruD8FcVL7AdKh7XVXjWsNqx0LYorVTZCA9ysJVB",
-        "Token": "FzwzjCskALu0G67vQiF1DBxgma6S2p0DI1oZNh9/+SqKHL3LB5ecYgqowjDCDLWLrKFHVggKDfWkfFo8Su8GikL1aZNwV2bHzaJBI/Wn4LxdKAugydKiS2jmXPj9iDmy+f6/smQQRVLeLnsiy0GJ0zAI4ZBHq6tIcxS13u+REF9wnZ7BXknIVNea5PTa8L69D27HJ9tC...ds97d3n3FSK3DM==",
+        "Token": "FzwzjCskALu0..ds97d3n3FSK3DM==",
         "Expiration": "2099-03-30T00:00:00Z",
         "Code": "Success"
 }
@@ -58,7 +58,7 @@ Manually setting up aws credentials as profile: temporary-credentials
 AWS Access Key ID: ASIAABCDEFGHIJKLMNOP
 AWS Secret Access Key: 1ruD8FcVL7AdKh7XVXjWsNqx0LYorVTZCA9ysJVB
 Recognised temporary credentials
-AWS Session Token: FzwzjCskALu0G67vQiF1DBxgma6S2p0DI1oZNh9/+SqKHL3LB5ecYgqowjDCDLWLrKFHVggKDfWkfFo8Su8GikL1aZNwV2bHzaJBI/Wn4LxdKAugydKiS2jmXPj9iDmy+f6/smQQRVLeLnsiy0GJ0zAI4ZBHq6tIcxS13u+REF9wnZ7BXknIVNea5PTa8L69D27HJ9tC...ds97d3n3FSK3DM==
+AWS Session Token: FzwzjCskALu0...ds97d3n3FSK3DM==
 ```
 
 ### Configure a profile for an assumeable role which requires MFA
