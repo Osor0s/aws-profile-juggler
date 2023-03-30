@@ -149,6 +149,9 @@ def write_new_profile(profile_string, file, profile_start_string, overwrite):
             new_content = file_content +"\n"+ profile_string
         else:
             if not overwrite:
+                print(f"[!] Composed the following profile but did not write it to the file:\n")
+                print(profile_string)
+                print()
                 print('[!] Profile already exists! Either choose a different profile name with the option "-p" OR use "-o" to overwrite the existing profile')
                 return
             else:
