@@ -27,7 +27,7 @@ def main():
     group.add_argument("-q", "--quite", help="surpress all output", action="store_true")
     group.add_argument("-d", "--debug", help="See debug output", action="store_true")
     ## dealing with credentials
-    parser.add_argument("--print-creds", help="additionally print out the found credentials to the commandline", action="store_true")
+    parser.add_argument("--print-creds", help="Print out the found credentials to the commandline", action="store_true")
     parser.add_argument("-p","--profile", help="profile name", type=str,default="temp")
     parser.add_argument("-o","--overwrite", help="overwrite the profile entry if it exists", action="store_true")
     parser.add_argument("-f","--file",help = "AWS credentials file", type=str,default=AWS_CREDENTIALS_FILE)
@@ -35,7 +35,7 @@ def main():
     parser.add_argument("-c","--configure",help = "Configure (temp) AWS credentials manually", action="store_true")
     parser.add_argument("-m","--mfa-configure",help = "Configure an mfa profile to automatically assume a role and ask for new token when necessary", action="store_true")
     parser.add_argument("--aws-config-file",help = "AWS config file", type=str,default=AWS_CONFIG_FILE)
-
+    parser.add_argument("-e","--env",help="Prints the commands to export the AWS credentials to the environment. Requires --print-creds", choices=["bash", "cmd", "ps"], default=None)
     args = parser.parse_args()  
 
     # Setup loggin
@@ -74,9 +74,12 @@ def main():
         extract_credentials(pipe_input,credentials)
 
         if args.print_creds:
-            print_credentials(credentials,args.profile)
-
-        write_credentials(credentials, args.file, args.profile, args.overwrite)
+            if args.env:
+                print_environment(credentials,args.env)
+            else:
+                print_credentials(credentials,args.profile)
+        else:
+            write_credentials(credentials, args.file, args.profile, args.overwrite)
     else:
         parser.print_help()
 
@@ -96,7 +99,7 @@ def extract_credentials(pipe_input,credentials):
             pattern = r'[a-zA-Z0-9/+]{40}'
             aliases = AWS_SECRET_ACCESS_KEY_ALIASES
         elif credential_part == "AWS_SESSION_TOKEN":
-            pattern = r'[I][a-zA-Z0-9/+=]{200,}'
+            pattern = r'[a-zA-Z0-9/+=]{200,}'
             aliases = AWS_SESSION_TOKEN_ALIASES
 
         for alias in aliases:
@@ -119,6 +122,25 @@ def print_credentials(credentials,profile):
     else:
         print(f'[{profile}]\naws_access_key_id = {credentials["AWS_ACCESS_KEY_ID"]}\naws_secret_access_key={credentials["AWS_SECRET_ACCESS_KEY"]}\naws_session_token={credentials["AWS_SESSION_TOKEN"]}')
 
+
+def print_environment(credentials, fmt):
+    """
+    Prints commands to export as environment variables for the specified shell
+    """
+    if credentials['AWS_ACCESS_KEY_ID'].startswith("AKIA"):
+        if fmt == "bash":
+            print(f'export AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\nexport AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"')
+        if fmt == "cmd":
+            print(f'set AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\nset AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"')
+        if fmt == "ps":
+            print(f'$Env:AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\n$Env:AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"')
+    else:
+        if fmt == "bash":
+            print(f'export AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\nexport AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"\nexport AWS_SESSION_TOKEN=\"{credentials["AWS_SESSION_TOKEN"]}\"')
+        if fmt == "cmd":
+            print(f'set AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\nset AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"\nset AWS_SESSION_TOKEN=\"{credentials["AWS_SESSION_TOKEN"]}\"')
+        if fmt == "ps":
+            print(f'$Env:AWS_ACCESS_KEY_ID=\"{credentials["AWS_ACCESS_KEY_ID"]}\"\n$Env:AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SECRET_ACCESS_KEY"]}\"\n$Env:AWS_SECRET_ACCESS_KEY=\"{credentials["AWS_SESSION_TOKEN"]}\"')
 
 
 def write_credentials(credentials, file, profile, overwrite):
